@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\TriggerNotificationEvent;
 use App\Events\TriggerPrivateNotificationEvent;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class TriggerController extends Controller
@@ -15,7 +16,8 @@ class TriggerController extends Controller
                 event(new TriggerNotificationEvent('Hello World!'));
                 break;
             case 'private':
-                event(new TriggerPrivateNotificationEvent('Hello in private!', auth()->user()));
+                $user = User::findOrFail($request->input('user_id'));
+                event(new TriggerPrivateNotificationEvent('Hello in private!', $user));
                 break;
         }
     }

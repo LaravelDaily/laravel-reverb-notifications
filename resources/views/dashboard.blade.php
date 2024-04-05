@@ -13,6 +13,13 @@
                             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                         Trigger Global Notification
                     </button>
+
+                    <select id="user_id">
+                        @foreach($users as $user)
+                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                        @endforeach
+                    </select>
+
                     <button id="triggerPrivateNotification"
                             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                         Trigger Private Notification
@@ -48,6 +55,7 @@
                 body: JSON.stringify({
                     type: 'private',
                     _token: '{{ csrf_token() }}',
+                    user_id: document.getElementById('user_id').value
                 })
             })
         });
