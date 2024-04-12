@@ -311,6 +311,7 @@
                             <span class="text-base font-normal text-gray-500">This is a list of latest transactions</span>
                         </div>
                         <div class="flex-shrink-0">
+                            <a href="{{ route('start-export') }}" class="text-sm font-medium text-cyan-600 hover:bg-gray-100 rounded-lg p-2">Export</a>
                             <a href="#" class="text-sm font-medium text-cyan-600 hover:bg-gray-100 rounded-lg p-2">View
                                 all</a>
                         </div>
