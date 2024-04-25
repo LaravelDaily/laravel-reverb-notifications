@@ -2,12 +2,12 @@
 
 namespace App\Jobs;
 
-use App\Events\ExportFinishedEvent;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Broadcast;
 
 class ExportPdfDataJob implements ShouldQueue
 {
@@ -21,6 +21,13 @@ class ExportPdfDataJob implements ShouldQueue
     {
         sleep(5);
 
-        event(new ExportFinishedEvent($this->userId, 'file.pdf'));
+        Broadcast::private('App.Models.User.' . $this->userId)
+            ->as('App\\Events\\ExportFinishedEvent')
+            ->with([
+                'user_id' => $this->userId,
+                'file_path' => 'file.pdf',
+            ])
+            ->via('reverb')
+            ->send();
     }
 }

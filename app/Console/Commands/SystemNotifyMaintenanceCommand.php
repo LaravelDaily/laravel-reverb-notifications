@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Events\SystemMaintenanceEvent;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Broadcast;
 
 class SystemNotifyMaintenanceCommand extends Command
 {
@@ -15,6 +15,12 @@ class SystemNotifyMaintenanceCommand extends Command
     {
         $time = $this->ask('When should it happen?');
 
-        event(new SystemMaintenanceEvent($time));
+        Broadcast::on('system-maintenance')
+            ->as('App\\Events\\SystemMaintenanceEvent')
+            ->with([
+                'time' => $time
+            ])
+            ->via('reverb')
+            ->send();
     }
 }
